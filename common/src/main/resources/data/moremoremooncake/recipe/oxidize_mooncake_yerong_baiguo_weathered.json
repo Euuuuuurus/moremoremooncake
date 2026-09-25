@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "group": "moremoremooncake:oxidize",
+  "ingredients": [
+    {"item": "moremoremooncake:mooncake_yerong_baiguo_weathered"},
+    {"item": "minecraft:copper_block"}
+  ],
+  "result": {
+    "id": "moremoremooncake:mooncake_yerong_baiguo_oxidized",
+    "count": 1
+  }
+}

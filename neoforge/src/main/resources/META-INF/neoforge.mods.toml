@@ -1,0 +1,40 @@
+modLoader = "javafml"
+loaderVersion = "[4,)"
+license = "MIT"
+
+[[mods]]
+modId = "moremoremooncake"
+version = "${version}"
+displayName = "MoreMore Mooncake (Double)"
+description = '''
+An independent addon for More Mooncake: 12 fillings, 66 double-filling combos x 8 copper-style states with unique food effects. Depends on the base more_mooncake mod.
+'''
+logoFile = "pack.png"
+
+[[dependencies.moremoremooncake]]
+modId = "neoforge"
+mandatory = true
+versionRange = "[21.1,)"
+ordering = "NONE"
+side = "BOTH"
+
+[[dependencies.moremoremooncake]]
+modId = "minecraft"
+mandatory = true
+versionRange = "[1.21.1,1.22)"
+ordering = "NONE"
+side = "BOTH"
+
+[[dependencies.moremoremooncake]]
+modId = "architectury"
+mandatory = true
+versionRange = "[13.0.8,)"
+ordering = "AFTER"
+side = "BOTH"
+
+[[dependencies.moremoremooncake]]
+modId = "more_mooncake"
+mandatory = true
+versionRange = "[1.0.0,)"
+ordering = "BEFORE"
+side = "BOTH"

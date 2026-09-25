@@ -1,0 +1,14 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "group": "moremoremooncake:slice",
+  "ingredients": [
+    {"item": "minecraft:wheat"},
+    {"item": "minecraft:cocoa_beans"},
+    {"item": "minecraft:ink_sac"}
+  ],
+  "result": {
+    "id": "moremoremooncake:mooncake_dousha_heizhima",
+    "count": 2
+  }
+}

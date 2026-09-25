@@ -1,0 +1,33 @@
+architectury {
+    common(rootProject.enabled_platforms.split(","))
+}
+
+loom {
+    accessWidenerPath = file("src/main/resources/moremoremooncake.accesswidener")
+}
+
+dependencies {
+    modImplementation "net.fabricmc:fabric-loader:${rootProject.fabric_loader_version}"
+    modApi "dev.architectury:architectury:${rootProject.architectury_version}"
+
+    // The independent addon compiles against the base more_mooncake common classes.
+    // The base mod itself is installed separately at runtime (this is a true addon),
+    // so it is only a compile-only dependency here. modCompileOnly makes Loom remap the
+    // base jar's intermediary-mapped Minecraft references into this project's named mappings.
+    modCompileOnly files("${rootProject.projectDir}/libs/more-mooncake-common.jar")
+
+    // JEI API only - the plugin lives in common and is packaged into both jars.
+    // It is never loaded unless JEI is installed (JEI scans @JeiPlugin classes itself).
+    compileOnly "mezz.jei:jei-1.21.1-common-api:${rootProject.jei_version}"
+}
+
+publishing {
+    publications {
+        mavenCommon(MavenPublication) {
+            artifactId = rootProject.archives_base_name
+            from components.java
+        }
+    }
+    repositories {
+    }
+}

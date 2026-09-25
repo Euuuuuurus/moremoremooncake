@@ -1,0 +1,30 @@
+# Gradle / Loom caches and outputs
+.gradle/
+.gradle-fresh*/
+.build-tmp/
+build/
+out/
+
+# Dev-run runtime files (test worlds, logs)
+run/
+
+# Dev-only third-party jars (patched JEI / mezz_config for dev runs) - not for distribution
+run-mods/
+
+# Base-mod dependency jar copied into the project for compilation - build it from the
+# more_mooncake repo instead (see README.md)
+libs/
+
+# IDE
+.idea/
+*.iml
+.vscode/
+.classpath
+.project
+.settings/
+bin/
+*.swp
+
+# OS
+Thumbs.db
+Desktop.ini

@@ -1,0 +1,14 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "group": "moremoremooncake:slice",
+  "ingredients": [
+    {"item": "minecraft:wheat"},
+    {"item": "minecraft:sweet_berries"},
+    {"item": "minecraft:sugar"}
+  ],
+  "result": {
+    "id": "moremoremooncake:mooncake_zaoni_yerong",
+    "count": 2
+  }
+}

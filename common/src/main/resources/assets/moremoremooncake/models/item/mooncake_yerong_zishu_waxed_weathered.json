@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "moremoremooncake:item/mooncake_yerong_zishu_waxed_weathered"
+  }
+}

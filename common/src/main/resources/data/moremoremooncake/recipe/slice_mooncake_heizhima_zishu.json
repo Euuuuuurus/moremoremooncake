@@ -1,0 +1,14 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "group": "moremoremooncake:slice",
+  "ingredients": [
+    {"item": "minecraft:wheat"},
+    {"item": "minecraft:ink_sac"},
+    {"item": "minecraft:beetroot"}
+  ],
+  "result": {
+    "id": "moremoremooncake:mooncake_heizhima_zishu",
+    "count": 2
+  }
+}

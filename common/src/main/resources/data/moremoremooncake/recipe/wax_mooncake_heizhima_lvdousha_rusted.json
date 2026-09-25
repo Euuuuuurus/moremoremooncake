@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "group": "moremoremooncake:wax",
+  "ingredients": [
+    {"item": "moremoremooncake:mooncake_heizhima_lvdousha_rusted"},
+    {"item": "minecraft:honeycomb"}
+  ],
+  "result": {
+    "id": "moremoremooncake:mooncake_heizhima_lvdousha_waxed_rusted",
+    "count": 1
+  }
+}

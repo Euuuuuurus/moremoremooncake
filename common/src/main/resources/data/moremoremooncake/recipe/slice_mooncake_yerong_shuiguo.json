@@ -1,0 +1,14 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "group": "moremoremooncake:slice",
+  "ingredients": [
+    {"item": "minecraft:wheat"},
+    {"item": "minecraft:sugar"},
+    {"item": "minecraft:melon_slice"}
+  ],
+  "result": {
+    "id": "moremoremooncake:mooncake_yerong_shuiguo",
+    "count": 2
+  }
+}

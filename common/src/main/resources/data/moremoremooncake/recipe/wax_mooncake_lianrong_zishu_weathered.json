@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "group": "moremoremooncake:wax",
+  "ingredients": [
+    {"item": "moremoremooncake:mooncake_lianrong_zishu_weathered"},
+    {"item": "minecraft:honeycomb"}
+  ],
+  "result": {
+    "id": "moremoremooncake:mooncake_lianrong_zishu_waxed_weathered",
+    "count": 1
+  }
+}

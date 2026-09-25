@@ -1,0 +1,27 @@
+{
+  "schemaVersion": 1,
+  "id": "moremoremooncake",
+  "version": "${version}",
+  "name": "MoreMore Mooncake (Double)",
+  "description": "An independent addon for More Mooncake: 12 fillings, 66 double-filling combos x 8 copper-style states with unique food effects. Depends on the base more_mooncake mod.",
+  "authors": [
+    "moremoremooncake"
+  ],
+  "license": "MIT",
+  "icon": "pack.png",
+  "environment": "*",
+  "entrypoints": {
+    "main": [
+      "com.moremoremooncake.fabric.MoremoremooncakeFabric"
+    ]
+  },
+  "accessWidener": "moremoremooncake.accesswidener",
+  "depends": {
+    "fabricloader": ">=0.15.0",
+    "minecraft": ">=1.21.1",
+    "java": ">=21",
+    "fabric-api": "*",
+    "architectury": ">=13.0.8",
+    "more_mooncake": "*"
+  }
+}

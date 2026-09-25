@@ -1,0 +1,111 @@
+plugins {
+    id "com.github.johnrengelman.shadow"
+}
+
+// In a standalone Architectury project the `architectury { neoForge() }` DSL alone does not
+// register the `neoForge` configuration that `dependencies { neoForge "..." }` relies on.
+// Declare it explicitly and tell Loom this is the NeoForge platform so the NeoForge userdev
+// gets processed on to the compile classpath.
+ext["loom.platform"] = "neoforge"
+
+architectury {
+    platformSetupLoomIde()
+    neoForge()
+}
+
+base {
+    archivesName = rootProject.archives_base_name + "-neoforge"
+}
+
+loom {
+    accessWidenerPath = project(":common").loom.accessWidenerPath
+}
+
+configurations {
+    common
+    shadowCommon
+    neoForge
+    compileClasspath.extendsFrom common
+    runtimeClasspath.extendsFrom common
+    developmentNeoForge.extendsFrom common
+}
+
+dependencies {
+    neoForge "net.neoforged:neoforge:${rootProject.neo_forge_version}"
+    modApi "dev.architectury:architectury-neoforge:${rootProject.architectury_version}"
+
+    common(project(path: ":common", configuration: "namedElements")) { transitive false }
+    shadowCommon(project(path: ":common", configuration: "transformProductionNeoForge")) { transitive false }
+
+    // Base more_mooncake classes only at compile time; the base mod is a runtime requirement.
+    modCompileOnly files("${rootProject.projectDir}/libs/more-mooncake-common.jar")
+
+    // Runtime: the built base NeoForge mod jar so `runServer` loads the base mod too.
+    modRuntimeOnly files("${rootProject.projectDir}/run-mods/more-mooncake-neoforge-1.0.0.jar")
+
+    // JEI at dev-runtime only: lets runClient/runServer actually load JEI and the
+    // @JeiPlugin classes for verification. Never packaged into the release jar.
+    modRuntimeOnly files("${rootProject.projectDir}/run-mods/jei-1.21.1-neoforge-19.57.0.448-loom17.jar")
+    // JEI embeds mezz_config via jar-in-jar; dev runs need it as a standalone mod dependency.
+    modRuntimeOnly files("${rootProject.projectDir}/run-mods/mezz_config-1.21.1-neoforge-0.5.12.jar")
+}
+
+loom {
+    runs {
+        server {
+            ideConfigGenerated = true
+            programArgs "--nogui"
+            runDir "run"
+        }
+    }
+}
+
+processResources {
+    inputs.property "version", project.version
+
+    filesMatching("META-INF/neoforge.mods.toml") {
+        expand "version": project.version
+    }
+}
+
+shadowJar {
+    exclude "fabric.mod.json"
+    exclude "architectury.common.json"
+
+    configurations = [project.configurations.shadowCommon]
+    archiveClassifier.set("dev-shadow")
+}
+
+remapJar {
+    input.set shadowJar.archiveFile
+    dependsOn shadowJar
+    archiveClassifier.set(null)
+}
+
+jar {
+    archiveClassifier.set("dev")
+}
+
+sourcesJar {
+    def commonSources = project(":common").sourcesJar
+    dependsOn commonSources
+    from commonSources.archiveFile.map { zipTree(it) }
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+}
+
+components.java {
+    withVariantsFromConfiguration(project.configurations.shadowRuntimeElements) {
+        skip()
+    }
+}
+
+publishing {
+    publications {
+        mavenForge(MavenPublication) {
+            artifactId = rootProject.archives_base_name + "-" + project.name
+            from components.java
+        }
+    }
+    repositories {
+    }
+}

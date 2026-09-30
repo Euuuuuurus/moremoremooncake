@@ -89,8 +89,9 @@ public final class Registry {
     public static ItemStack byId(String id) {
         ResourceLocation loc = id.contains(":") ? ResourceLocation.parse(id)
                 : ResourceLocation.fromNamespaceAndPath(MOD, id);
-        Item item = net.minecraft.core.registries.BuiltInRegistries.ITEM.get(loc);
-        return item == net.minecraft.world.item.Items.AIR ? ItemStack.EMPTY : new ItemStack(item);
+        return net.minecraft.core.registries.BuiltInRegistries.ITEM.getOptional(loc)
+                .map(ItemStack::new)
+                .orElse(ItemStack.EMPTY);
     }
 
     private static RegistrySupplier<Item> register(String name, Supplier<Item> supplier) {

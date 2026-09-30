@@ -1,5 +1,6 @@
 # Gradle / Loom caches and outputs
 .gradle/
+.gradle*/
 .gradle-fresh*/
 .build-tmp/
 build/

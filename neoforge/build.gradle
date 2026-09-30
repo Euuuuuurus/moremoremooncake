@@ -41,13 +41,12 @@ dependencies {
     modCompileOnly files("${rootProject.projectDir}/libs/more-mooncake-common.jar")
 
     // Runtime: the built base NeoForge mod jar so `runServer` loads the base mod too.
-    modRuntimeOnly files("${rootProject.projectDir}/run-mods/more-mooncake-neoforge-1.0.0.jar")
+    modRuntimeOnly files("${rootProject.projectDir}/run-mods/more-mooncake-neoforge-1.21.4.jar")
 
     // JEI at dev-runtime only: lets runClient/runServer actually load JEI and the
     // @JeiPlugin classes for verification. Never packaged into the release jar.
-    modRuntimeOnly files("${rootProject.projectDir}/run-mods/jei-1.21.1-neoforge-19.57.0.448-loom17.jar")
-    // JEI embeds mezz_config via jar-in-jar; dev runs need it as a standalone mod dependency.
-    modRuntimeOnly files("${rootProject.projectDir}/run-mods/mezz_config-1.21.1-neoforge-0.5.12.jar")
+    // (JEI bundles mezz_config itself via NeoForge jar-in-jar, so no separate dep needed.)
+    modRuntimeOnly "mezz.jei:jei-${rootProject.minecraft_version}-neoforge:${rootProject.jei_version}"
 }
 
 loom {

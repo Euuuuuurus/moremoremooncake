@@ -35,11 +35,11 @@ dependencies {
     modCompileOnly files("${rootProject.projectDir}/libs/more-mooncake-common.jar")
 
     // Runtime: the built base Fabric mod jar so `runServer` loads the base mod too.
-    modRuntimeOnly files("${rootProject.projectDir}/run-mods/more-mooncake-fabric-1.21.4.jar")
+    modRuntimeOnly files("${rootProject.projectDir}/run-mods/more-mooncake-fabric-1.21.5.jar")
 
-    // NOTE: JEI has no Fabric build for MC 1.21.4 (NeoForge only), so there is no JEI
-    // dev-runtime dependency on the Fabric platform. The @JeiPlugin classes still ride in
-    // the jar as a soft dependency and simply never load without JEI.
+    // JEI at dev-runtime only: lets runClient/runServer actually load JEI and the
+    // @JeiPlugin classes for verification. Never packaged into the release jar.
+    modRuntimeOnly "mezz.jei:jei-${rootProject.minecraft_version}-fabric:${rootProject.jei_version}"
 }
 
 loom {

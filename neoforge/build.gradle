@@ -41,7 +41,7 @@ dependencies {
     modCompileOnly files("${rootProject.projectDir}/libs/more-mooncake-common.jar")
 
     // Runtime: the built base NeoForge mod jar so `runServer` loads the base mod too.
-    modRuntimeOnly files("${rootProject.projectDir}/run-mods/more-mooncake-neoforge-1.21.4.jar")
+    modRuntimeOnly files("${rootProject.projectDir}/run-mods/more-mooncake-neoforge-1.21.5.jar")
 
     // JEI at dev-runtime only: lets runClient/runServer actually load JEI and the
     // @JeiPlugin classes for verification. Never packaged into the release jar.

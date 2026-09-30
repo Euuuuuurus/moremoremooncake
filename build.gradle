@@ -76,7 +76,7 @@ subprojects {
             implementation "dev.architectury:architectury-fabric:${rootProject.architectury_version}"
 
             // Runtime: the built base Fabric mod jar so `runServer` loads the base mod too.
-            runtimeOnly files("${rootProject.projectDir}/run-mods/more-mooncake-fabric-26.2.jar")
+            runtimeOnly files("${rootProject.projectDir}/run-mods/more-mooncake-fabric-26.3.jar")
 
             // JEI at dev-runtime only: lets runClient/runServer actually load JEI and the
             // @JeiPlugin classes for verification. Never packaged into the release jar.
@@ -90,7 +90,7 @@ subprojects {
             implementation "dev.architectury:architectury-neoforge:${rootProject.architectury_version}"
 
             // Runtime: the built base NeoForge mod jar so `runServer` loads the base mod too.
-            runtimeOnly files("${rootProject.projectDir}/run-mods/more-mooncake-neoforge-26.2.jar")
+            runtimeOnly files("${rootProject.projectDir}/run-mods/more-mooncake-neoforge-26.3.jar")
 
             // JEI at dev-runtime only: lets runClient/runServer actually load JEI and the
             // @JeiPlugin classes for verification. Never packaged into the release jar.

@@ -4,15 +4,21 @@ import com.moremooncake.mooncake.item.MooncakeFood;
 import com.moremooncake.mooncake.mooncake.MooncakeState;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
+import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.food.FoodProperties;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.ItemUseAnimation;
 import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.item.component.Consumable;
+import net.minecraft.world.item.component.TooltipDisplay;
+import net.minecraft.world.item.consume_effects.ApplyStatusEffectsConsumeEffect;
 
 import com.moremoremooncake.registry.Registry;
 
 import java.util.List;
+import java.util.function.Consumer;
 
 /**
  * An addon double-filling mooncake slice, in the independent {@code moremoremooncake} mod.
@@ -34,27 +40,33 @@ public class DoubleFlavorMooncakeItem extends Item implements MooncakeFood {
     }
 
     private static Item.Properties createProperties(DoubleFlavor flavor, MooncakeState state) {
-        FoodProperties.Builder food = new FoodProperties.Builder()
+        FoodProperties food = new FoodProperties.Builder()
                 .nutrition(1)
                 .saturationModifier(0.15F)
-                .alwaysEdible();
-        for (MobEffectInstance effect : AddonEffects.effectsFor(flavor.effects(), state)) {
-            food.effect(effect, 1.0F);
-        }
-        return new Item.Properties().food(food.build());
+                .alwaysEdible()
+                .build();
+        Consumable consumable = Consumable.builder()
+                .consumeSeconds(1.6F)
+                .animation(ItemUseAnimation.EAT)
+                .sound(SoundEvents.GENERIC_EAT)
+                .hasConsumeParticles(true)
+                .onConsume(new ApplyStatusEffectsConsumeEffect(AddonEffects.effectsFor(flavor.effects(), state)))
+                .build();
+        return new Item.Properties().food(food, consumable);
     }
 
     @Override
-    public void appendHoverText(ItemStack stack, TooltipContext context, List<Component> tooltipComponents, TooltipFlag tooltipFlag) {
-        tooltipComponents.add(Component.translatable("tooltip.more_mooncake.festival").withStyle(ChatFormatting.GOLD));
-        tooltipComponents.add(Component.literal(flavor.first().getZhName() + " + " + flavor.second().getZhName())
+    public void appendHoverText(ItemStack stack, Item.TooltipContext context, TooltipDisplay tooltipDisplay,
+                                Consumer<Component> tooltip, TooltipFlag tooltipFlag) {
+        tooltip.accept(Component.translatable("tooltip.more_mooncake.festival").withStyle(ChatFormatting.GOLD));
+        tooltip.accept(Component.literal(flavor.first().getZhName() + " + " + flavor.second().getZhName())
                 .withStyle(ChatFormatting.GOLD));
-        tooltipComponents.add(Component.translatable("tooltip.more_mooncake.slice_hint").withStyle(ChatFormatting.DARK_GRAY));
+        tooltip.accept(Component.translatable("tooltip.more_mooncake.slice_hint").withStyle(ChatFormatting.DARK_GRAY));
         if (state.isWaxed()) {
-            tooltipComponents.add(Component.translatable("tooltip.more_mooncake.waxed").withStyle(ChatFormatting.GRAY));
+            tooltip.accept(Component.translatable("tooltip.more_mooncake.waxed").withStyle(ChatFormatting.GRAY));
         }
         if (state.isOxidized() && !state.isWaxed()) {
-            tooltipComponents.add(Component.translatable("tooltip.more_mooncake.oxidized_side_effect").withStyle(ChatFormatting.DARK_RED));
+            tooltip.accept(Component.translatable("tooltip.more_mooncake.oxidized_side_effect").withStyle(ChatFormatting.DARK_RED));
         }
     }
 

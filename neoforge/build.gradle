@@ -1,5 +1,5 @@
 plugins {
-    id "com.github.johnrengelman.shadow"
+    id "com.gradleup.shadow"
 }
 
 // In a standalone Architectury project the `architectury { neoForge() }` DSL alone does not
@@ -13,50 +13,17 @@ architectury {
     neoForge()
 }
 
-base {
-    archivesName = rootProject.archives_base_name + "-neoforge"
-}
-
 loom {
     accessWidenerPath = project(":common").loom.accessWidenerPath
 }
 
 configurations {
-    common
-    shadowCommon
-    neoForge
-    compileClasspath.extendsFrom common
-    runtimeClasspath.extendsFrom common
     developmentNeoForge.extendsFrom common
 }
 
 dependencies {
-    neoForge "net.neoforged:neoforge:${rootProject.neo_forge_version}"
-    modApi "dev.architectury:architectury-neoforge:${rootProject.architectury_version}"
-
-    common(project(path: ":common", configuration: "namedElements")) { transitive false }
-    shadowCommon(project(path: ":common", configuration: "transformProductionNeoForge")) { transitive false }
-
-    // Base more_mooncake classes only at compile time; the base mod is a runtime requirement.
-    modCompileOnly files("${rootProject.projectDir}/libs/more-mooncake-common.jar")
-
-    // Runtime: the built base NeoForge mod jar so `runServer` loads the base mod too.
-    modRuntimeOnly files("${rootProject.projectDir}/run-mods/more-mooncake-neoforge-1.21.5.jar")
-
-    // JEI at dev-runtime only: lets runClient/runServer actually load JEI and the
-    // @JeiPlugin classes for verification. Never packaged into the release jar.
-    // (JEI bundles mezz_config itself via NeoForge jar-in-jar, so no separate dep needed.)
-    modRuntimeOnly "mezz.jei:jei-${rootProject.minecraft_version}-neoforge:${rootProject.jei_version}"
-}
-
-loom {
-    runs {
-        server {
-            ideConfigGenerated = true
-            programArgs "--nogui"
-            runDir "run"
-        }
-    }
+    common(project(path: ":common")) { transitive false }
+    shadowBundle project(path: ":common", configuration: "transformProductionNeoForge")
 }
 
 processResources {
@@ -67,22 +34,13 @@ processResources {
     }
 }
 
-shadowJar {
-    exclude "fabric.mod.json"
-    exclude "architectury.common.json"
-
-    configurations = [project.configurations.shadowCommon]
-    archiveClassifier.set("dev-shadow")
-}
-
-remapJar {
-    input.set shadowJar.archiveFile
-    dependsOn shadowJar
-    archiveClassifier.set(null)
-}
-
-jar {
-    archiveClassifier.set("dev")
+// 26.x ships an unpacked, unobfuscated minecraft jar; the bundled common output can exceed the
+// classic 65535-entry zip limit, so the distributable shadow jar needs the zip64 extension.
+tasks.shadowJar {
+    zip64 = true
+    // Only bundle the common module (via shadowBundle), never the whole runtime classpath.
+    configurations = [project.configurations.shadowBundle]
+    archiveClassifier.set("")
 }
 
 sourcesJar {

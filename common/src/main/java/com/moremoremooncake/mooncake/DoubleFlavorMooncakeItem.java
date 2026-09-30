@@ -45,16 +45,18 @@ public class DoubleFlavorMooncakeItem extends Item implements MooncakeFood {
     }
 
     @Override
-    public void appendHoverText(ItemStack stack, TooltipContext context, List<Component> tooltipComponents, TooltipFlag tooltipFlag) {
-        tooltipComponents.add(Component.translatable("tooltip.more_mooncake.festival").withStyle(ChatFormatting.GOLD));
-        tooltipComponents.add(Component.literal(flavor.first().getZhName() + " + " + flavor.second().getZhName())
+    public void appendHoverText(ItemStack stack, Item.TooltipContext context,
+                                net.minecraft.world.item.component.TooltipDisplay tooltipDisplay,
+                                java.util.function.Consumer<Component> tooltip, TooltipFlag tooltipFlag) {
+        tooltip.accept(Component.translatable("tooltip.more_mooncake.festival").withStyle(ChatFormatting.GOLD));
+        tooltip.accept(Component.literal(flavor.first().getZhName() + " + " + flavor.second().getZhName())
                 .withStyle(ChatFormatting.GOLD));
-        tooltipComponents.add(Component.translatable("tooltip.more_mooncake.slice_hint").withStyle(ChatFormatting.DARK_GRAY));
+        tooltip.accept(Component.translatable("tooltip.more_mooncake.slice_hint").withStyle(ChatFormatting.DARK_GRAY));
         if (state.isWaxed()) {
-            tooltipComponents.add(Component.translatable("tooltip.more_mooncake.waxed").withStyle(ChatFormatting.GRAY));
+            tooltip.accept(Component.translatable("tooltip.more_mooncake.waxed").withStyle(ChatFormatting.GRAY));
         }
         if (state.isOxidized() && !state.isWaxed()) {
-            tooltipComponents.add(Component.translatable("tooltip.more_mooncake.oxidized_side_effect").withStyle(ChatFormatting.DARK_RED));
+            tooltip.accept(Component.translatable("tooltip.more_mooncake.oxidized_side_effect").withStyle(ChatFormatting.DARK_RED));
         }
     }
 

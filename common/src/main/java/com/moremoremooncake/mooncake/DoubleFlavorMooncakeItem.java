@@ -4,11 +4,15 @@ import com.moremooncake.mooncake.item.MooncakeFood;
 import com.moremooncake.mooncake.mooncake.MooncakeState;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
+import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.food.FoodProperties;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.ItemUseAnimation;
 import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.item.component.Consumable;
+import net.minecraft.world.item.consume_effects.ApplyStatusEffectsConsumeEffect;
 
 import com.moremoremooncake.registry.Registry;
 
@@ -34,14 +38,19 @@ public class DoubleFlavorMooncakeItem extends Item implements MooncakeFood {
     }
 
     private static Item.Properties createProperties(DoubleFlavor flavor, MooncakeState state) {
-        FoodProperties.Builder food = new FoodProperties.Builder()
+        FoodProperties food = new FoodProperties.Builder()
                 .nutrition(1)
                 .saturationModifier(0.15F)
-                .alwaysEdible();
-        for (MobEffectInstance effect : AddonEffects.effectsFor(flavor.effects(), state)) {
-            food.effect(effect, 1.0F);
-        }
-        return new Item.Properties().food(food.build());
+                .alwaysEdible()
+                .build();
+        Consumable consumable = Consumable.builder()
+                .consumeSeconds(1.6F)
+                .animation(ItemUseAnimation.EAT)
+                .sound(SoundEvents.GENERIC_EAT)
+                .hasConsumeParticles(true)
+                .onConsume(new ApplyStatusEffectsConsumeEffect(AddonEffects.effectsFor(flavor.effects(), state)))
+                .build();
+        return new Item.Properties().food(food, consumable);
     }
 
     @Override

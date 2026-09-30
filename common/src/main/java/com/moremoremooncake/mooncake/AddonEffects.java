@@ -30,7 +30,7 @@ public final class AddonEffects {
             out.add(new MobEffectInstance(effect, durationTicks, level - 1, false, true, true));
         }
         if (state.isOxidized() && !state.isWaxed()) {
-            out.add(new MobEffectInstance(MobEffects.CONFUSION, 20 * 4, 0, false, true, true));
+            out.add(new MobEffectInstance(MobEffects.NAUSEA, 20 * 4, 0, false, true, true));
         }
         return out;
     }
